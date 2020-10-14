@@ -1,0 +1,22 @@
+#!/bin/bash
+
+PREFIX=user
+
+for NUMBER in {0..5}
+do
+  NAME="${PREFIX}${NUMBER}"
+  # Genera la sal aleatoriamente desde /dev/urandom
+ # SALT=$(dd if=/dev/urandom bs=1 count=6 2>/dev/null | base64)
+	pwgen > ${NUMBER}pass.txt
+	NUEVO="`cat ${NUMBER}pass.txt`"
+  PW="`mkpasswd -m sha-256 ${NUEVO} `"
+
+  useradd \
+    --password "${PW}" \
+    --create-home \
+    --home-dir=/home/$NAME \
+    --shell=/bin/bash \
+    --gid users \
+    $NAME
+done
+
